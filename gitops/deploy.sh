@@ -18,6 +18,8 @@ fi
 
 # Instance takes 40 secs +/- to build
 for i in {0..120}; do
+    echo "Checking instance status, attempt: $i"
+
     civo instance show "${HOSTNAME}" > instance.txt
     grep "ACTIVE" instance.txt
 
@@ -27,6 +29,14 @@ for i in {0..120}; do
 
         export IP=$(grep "Public IP" instance.txt | cut -d ">" -f2 |tr -d " ") 
         echo $IP
+
+        ssh -oStrictHostKeyChecking=no civo@$IP "uptime"
+        # SSH may not be up and running yet, so continue
+        if [ "$?" -eq "0" ]
+        then
+            sleep 5
+            continue
+        fi
         ssh -oStrictHostKeyChecking=no civo@$IP "sudo apt update && sudo apt install -qy nginx"
         scp -r -oStrictHostKeyChecking=no webroot civo@$IP:~/webroot
         ssh -oStrictHostKeyChecking=no civo@$IP "sudo rm -rf /var/www/html/* && sudo cp -r webroot/* /var/www/html/"
