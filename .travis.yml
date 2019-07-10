@@ -6,10 +6,10 @@ sudo: false
 #  - docker
 
 before_install:
-  - gem update --system
-  - gem --version
-  - rvm use default
-  - rvm repair wrappers
+#  - gem update --system
+#  - gem --version
+#  - rvm use default
+#  - rvm repair wrappers
 
 install:
 - ./gitops/prepare.sh
