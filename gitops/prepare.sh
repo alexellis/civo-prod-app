@@ -12,3 +12,6 @@ echo -n $SSH_PUBLIC_KEY | base64 --decode > ~/.ssh/id_rsa.pub
 echo -n $SSH_PRIVATE_KEY | base64 --decode > ~/.ssh/id_rsa
 
 echo -n $SSH_KEY_ID > $HOME/key_ids.txt
+
+echo `pwd`
+
