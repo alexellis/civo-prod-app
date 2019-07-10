@@ -6,13 +6,14 @@ civo apikey current production
 
 civo instance list
 
-mkdir -p ~/.ssh/
-
+export KEY_DIR="~/.ssh"
+mkdir -p $KEY_DIR
+chmod 700 $KEY_DIR
 
 # Convert the text back into human-readable format:
-echo -n $SSH_PUBLIC_KEY | base64 --decode > ~/.ssh/id_rsa.pub
-echo -n $SSH_PRIVATE_KEY | base64 --decode > ~/.ssh/id_rsa
+echo -n "${SSH_PUBLIC_KEY}" | base64 --decode > $KEY_DIR/id_rsa.pub
+echo -n "${SSH_PRIVATE_KEY}" | base64 --decode > $KEY_DIR/id_rsa
+
+chmod 600 $KEY_DIR/id_rsa
 
 echo -n $SSH_KEY_ID > $HOME/key_ids.txt
-
-echo `pwd`
