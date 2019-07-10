@@ -3,7 +3,7 @@ language: ruby
 services:
   - docker
 
-before_install:
+install:
 - ./gitops/prepare.sh
 
 script:
