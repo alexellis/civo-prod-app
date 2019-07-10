@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rvm use default
+
 sudo gem install civo_cli
 civo apikey add production "${CIVO_API_KEY}"
 civo apikey current production

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rvm use default
+
 echo `pwd`
 
 civo apikey current production
