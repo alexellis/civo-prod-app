@@ -4,7 +4,7 @@ services:
   - docker
 
 before_install:
-- prepare.sh
+- ./gitops/prepare.sh
 
 script:
-- deploy.sh
+- ./gitops/deploy.sh
