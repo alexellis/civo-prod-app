@@ -13,7 +13,7 @@ then
     civo instance create \
     ${HOSTNAME} \
     --template=${TEMPLATE} \
-    --ssh="${SSH_KEY_ID}"
+    --ssh-key="${SSH_KEY_ID}"
 fi
 
 # Instance takes 40 secs +/- to build
@@ -27,9 +27,9 @@ for i in {0..120}; do
 
         export IP=$(grep "Public IP" instance.txt | cut -d ">" -f2 |tr -d " ") 
         echo $IP
-        ssh -oStrictHostKeyChecking=no root@$IP "sudo apt update && sudo apt install -qy nginx"
-        scp -r -oStrictHostKeyChecking=no webroot root@$IP:~/webroot
-        ssh -oStrictHostKeyChecking=no root@$IP "sudo rm -rf /var/www/html/* && sudo cp -r webroot/* /var/www/html/"
+        ssh -oStrictHostKeyChecking=no civo@$IP "sudo apt update && sudo apt install -qy nginx"
+        scp -r -oStrictHostKeyChecking=no webroot civo@$IP:~/webroot
+        ssh -oStrictHostKeyChecking=no civo@$IP "sudo rm -rf /var/www/html/* && sudo cp -r webroot/* /var/www/html/"
 
         break
     fi
