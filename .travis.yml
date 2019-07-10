@@ -6,6 +6,8 @@ sudo: false
 #  - docker
 
 before_install:
+  - gem update --system
+  - gem --version
   - rvm use default
   - sudo rvm repair wrappers
 
