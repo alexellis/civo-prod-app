@@ -1,3 +1,4 @@
+
 #!/bin/bash
 
 export HOSTNAME="gitops-prod.example.com"
@@ -16,6 +17,10 @@ then
     --ssh-key="${SSH_KEY_ID}"
 fi
 
+
+cat ~/.ssh/id_rsa.pub
+stat ~/.ssh/id_rsa
+
 # Instance takes 40 secs +/- to build
 for i in {0..120}; do
     echo "Checking instance status, attempt: $i"
@@ -30,16 +35,16 @@ for i in {0..120}; do
         export IP=$(grep "Public IP" instance.txt | cut -d ">" -f2 |tr -d " ") 
         echo $IP
 
-        ssh -oStrictHostKeyChecking=no civo@$IP "uptime"
+        ssh -i $HOME/.ssh/id_rsa -oStrictHostKeyChecking=no civo@$IP "uptime"
         # SSH may not be up and running yet, so continue
         if [ "$?" -eq "0" ]
         then
             sleep 5
             continue
         fi
-        ssh -oStrictHostKeyChecking=no civo@$IP "sudo apt update && sudo apt install -qy nginx"
-        scp -r -oStrictHostKeyChecking=no webroot civo@$IP:~/webroot
-        ssh -oStrictHostKeyChecking=no civo@$IP "sudo rm -rf /var/www/html/* && sudo cp -r webroot/* /var/www/html/"
+        ssh -i $HOME/.ssh/id_rsa -oStrictHostKeyChecking=no civo@$IP "sudo apt update && sudo apt install -qy nginx"
+        scp -i $HOME/.ssh/id_rsa -r -oStrictHostKeyChecking=no webroot civo@$IP:~/webroot
+        ssh -i $HOME/.ssh/id_rsa -oStrictHostKeyChecking=no civo@$IP "sudo rm -rf /var/www/html/* && sudo cp -r webroot/* /var/www/html/"
 
         break
     fi
