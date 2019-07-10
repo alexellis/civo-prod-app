@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 export HOSTNAME="gitops-prod.example.com"
@@ -17,10 +16,6 @@ then
     --ssh-key="${SSH_KEY_ID}"
 fi
 
-
-cat ~/.ssh/id_rsa.pub
-stat ~/.ssh/id_rsa
-
 # Instance takes 40 secs +/- to build
 for i in {0..120}; do
     echo "Checking instance status, attempt: $i"
@@ -37,7 +32,7 @@ for i in {0..120}; do
 
         ssh -i $HOME/.ssh/id_rsa -oStrictHostKeyChecking=no civo@$IP "uptime"
         # SSH may not be up and running yet, so continue
-        if [ "$?" -eq "0" ]
+        if [ "$?" -ne "0" ]
         then
             sleep 5
             continue
