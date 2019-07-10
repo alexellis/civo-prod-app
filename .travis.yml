@@ -7,6 +7,7 @@ sudo: false
 
 before_install:
   - rvm use default
+  - sudo rvm repair wrappers
 
 install:
 - ./gitops/prepare.sh
