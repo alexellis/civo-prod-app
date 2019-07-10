@@ -1,11 +1,12 @@
 language: ruby
 
-services:
-  - docker
+sudo: false
+
+#services:
+#  - docker
 
 before_install:
-  - rvm get stable --auto-dotfiles
-  - rvm install 2.3.1
+  - rvm use default
 
 install:
 - ./gitops/prepare.sh
