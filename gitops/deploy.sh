@@ -16,8 +16,6 @@ then
     --ssh="${SSH_KEY_ID}"
 fi
 
-sleep 30
-
 # Instance takes 40 secs +/- to build
 for i in {0..120}; do
     civo instance show "${HOSTNAME}" > instance.txt
@@ -29,11 +27,12 @@ for i in {0..120}; do
 
         export IP=$(grep "Public IP" instance.txt | cut -d ">" -f2 |tr -d " ") 
         echo $IP
-        ssh -oStrictHostKeyChecking=no root@$IP "cat /etc/os-release"
+        ssh -oStrictHostKeyChecking=no root@$IP "sudo apt update && sudo apt install -qy nginx"
+        scp -r -oStrictHostKeyChecking=no webroot root@$IP:~/webroot
+        ssh -oStrictHostKeyChecking=no root@$IP "sudo rm -rf /var/www/html/* && sudo cp -r webroot/* /var/www/html/"
 
         break
     fi
 
     sleep 10
 done
-
